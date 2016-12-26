@@ -10,6 +10,10 @@ public class UIController : MonoBehaviour
 
     public Text Score;
 
+    public Slider throwMeter;
+
+    public Image throwFillImage;
+
     private GameController GC;
 
     private int currentTimeLeft;
@@ -19,6 +23,9 @@ public class UIController : MonoBehaviour
 
     public delegate void CrateScored();
     public CrateScored crateScored;
+
+    public delegate void ThrowCharge(float value);
+    public ThrowCharge throwCharge;
 
     /// <summary>
     /// Counts up to a full second, then resets
@@ -32,14 +39,29 @@ public class UIController : MonoBehaviour
 
     private void Start()
 	{
+        SetActiveThrowMeter(false);
 		DeactivateTargetName();
         currentTimeLeft = GC.StartingTime;
         timeLeft.text = currentTimeLeft.ToString();
         nextSecond += UpdateTimer;
         crateScored += UpdateScoreGui;
     }
-	
-	public void ActivateTargetName(string itemName)
+
+
+    private void Update()
+    {
+        if (GC.GamePaused)
+            return;
+
+        CountToSecond += Time.deltaTime;
+        if (CountToSecond >= 1f)
+        {
+            nextSecond();
+            CountToSecond = 0f;
+        }
+    }
+
+    public void ActivateTargetName(string itemName)
 	{
 		textTarget.text = itemName + "\n[E]";
 	}
@@ -86,16 +108,26 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void Update()
+    /// <summary>
+    /// Update throw charge gui
+    /// </summary>
+    public void UpdateThrowCharge(float value)
     {
-        if (GC.GamePaused)
+        if (value < 0 || value > 1)
             return;
 
-        CountToSecond += Time.deltaTime;
-        if (CountToSecond >= 1f)
-        {
-            nextSecond();
-            CountToSecond = 0f;
-        }
+        throwMeter.normalizedValue = value;
+
+        throwFillImage.color = Color.Lerp(Color.yellow, Color.red, value);
+
     }
+
+    /// <summary>
+    /// Show or hide throw meter
+    /// </summary>
+    public void SetActiveThrowMeter(bool visible)
+    {
+        throwMeter.transform.gameObject.SetActive(visible);
+    }
+
 }

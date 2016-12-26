@@ -3,8 +3,6 @@ using System.Collections;
 
 public class PlayerInteractController : MonoBehaviour
 {
-    public float throwStrength = 10f;
-
     public PlayerInput input;
 	public UIController uiController;
 	private IInteractable currentInteractionTarget { get; set; }
@@ -134,7 +132,7 @@ public class PlayerInteractController : MonoBehaviour
     /// <summary>
     /// Launch grabbed object
     /// </summary>
-    private void ActivateLaunch()
+    private void ActivateLaunch(float throw_strength)
     {
         if (currentInteractionTarget == null)
             return;
@@ -142,7 +140,7 @@ public class PlayerInteractController : MonoBehaviour
         CratePickUp crate = currentInteractionTarget.GetGameObject().GetComponent<CratePickUp>();
 
         crate.ReleaseObject();
-        crate.RB.AddForce(MC.transform.forward * throwStrength, ForceMode.Impulse);
+        crate.RB.AddForce(MC.transform.forward * throw_strength, ForceMode.Impulse);
 
         //Debug.Log("throwing object");
     }
