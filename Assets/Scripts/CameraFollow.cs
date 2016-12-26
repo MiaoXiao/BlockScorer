@@ -81,7 +81,7 @@ public class CameraFollow : MonoBehaviour
         m_currentRotation.y = ClampAngle(m_currentRotation.y, verticalLimit.x, verticalLimit.y);
 		
 		Quaternion rotation = Quaternion.Euler(m_currentRotation.y, m_currentRotation.x, 0.0f);
-        Vector3 position = rotation * new Vector3(0.0f, Player.transform.localScale.y, -distance) + target.position;
+        Vector3 position =  new Vector3(0.0f, Player.transform.localScale.y / 2, -distance) + target.position;
              
         transform.rotation = rotation;
         transform.position = position;
