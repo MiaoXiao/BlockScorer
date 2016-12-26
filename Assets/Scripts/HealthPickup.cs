@@ -28,4 +28,9 @@ public class HealthPickup : MonoBehaviour, IInteractable
 	{
 		Destroy(gameObject);
 	}
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
 }

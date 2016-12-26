@@ -41,6 +41,11 @@ public class Door : MonoBehaviour, IInteractable
 		OpenDoor();
 	}
 	
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
+
 	private void OpenDoor()
 	{
 		isDoorOpen = true;

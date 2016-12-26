@@ -12,7 +12,7 @@ public class CratePickUp : MonoBehaviour, IInteractable
     public Color activeColor = Color.green;
 
     //References
-    private Rigidbody CrateRB;
+    public Rigidbody RB;
     private GameObject Player;
     private Camera MainCamera;
 
@@ -24,11 +24,11 @@ public class CratePickUp : MonoBehaviour, IInteractable
     /// <summary>
     /// Set to true when crate is picked up
     /// </summary>
-    private bool isGrabbed = false;
+    public bool isGrabbed = false;
 
     private void Awake()
     {
-        CrateRB = GetComponent<Rigidbody>();
+        RB = GetComponent<Rigidbody>();
         Player = GameObject.FindGameObjectWithTag("Player");
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
@@ -52,17 +52,21 @@ public class CratePickUp : MonoBehaviour, IInteractable
     {
         isGrabbed = !isGrabbed;
         if (!isGrabbed)
-            ReleaseObject(actor);
+            ReleaseObject();
         else
-            CrateRB.useGravity = false;
+            RB.useGravity = false;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
     }
 
     private void FixedUpdate()
     {
         if (isGrabbed)
         {
-            Debug.Log("grabbing");
-            CrateRB.MovePosition(MainCamera.transform.position + MainCamera.transform.forward * holdDistance * Time.fixedDeltaTime);
+            RB.MovePosition(MainCamera.transform.position + MainCamera.transform.forward * holdDistance * Time.fixedDeltaTime);
             //Debug.Log(MainCamera.transform.position + " " + MainCamera.transform.forward + " " + holdDistance);
         }
     }
@@ -70,9 +74,10 @@ public class CratePickUp : MonoBehaviour, IInteractable
     /// <summary>
     /// Release the grabbed object
     /// </summary>
-    public void ReleaseObject(GameObject actor)
+    public void ReleaseObject()
     {
-        Debug.Log("release object");
-        CrateRB.useGravity = true;
+        //Debug.Log("release object");
+        RB.useGravity = true;
+        isGrabbed = false;
     }
 }

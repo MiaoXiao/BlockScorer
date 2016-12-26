@@ -3,14 +3,23 @@ using System.Collections;
 
 public class PlayerInteractController : MonoBehaviour
 {
-	public PlayerInput input;
+    public float throwStrength = 10f;
+
+    public PlayerInput input;
 	public UIController uiController;
 	private IInteractable currentInteractionTarget { get; set; }
+
+    /// <summary>
+    /// Is the player currently grabbing something?
+    /// </summary>
+    private GameObject grabbedObject = null;
 
     /// <summary>
     /// Set to true when looking at an interactable object
     /// </summary>
     private bool mouseOvered = false;
+
+    //References
     private Camera MC;
     private GameController GC;
 
@@ -25,8 +34,9 @@ public class PlayerInteractController : MonoBehaviour
 		if(input != null)
 		{
 			input.onActivate += OnActivate;
+            input.onLaunch += ActivateLaunch;
 		}
-	}
+    }
 
     private void Update()
     {
@@ -38,9 +48,11 @@ public class PlayerInteractController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
+
             IInteractable interactComponent = hit.transform.GetComponent<IInteractable>();
             if (interactComponent != null)
             {
+
                 ActivateInteraction();
                 mouseOvered = true;
             }
@@ -48,18 +60,19 @@ public class PlayerInteractController : MonoBehaviour
             {
                 DeactivateInteraction();
                 mouseOvered = false;
+                grabbedObject = null;
             }
         }
-        Debug.Log(mouseOvered);
     }
 
-	private void OnDestroy()
-	{
-		if(input != null)
-		{
-			input.onActivate += OnActivate;
-		}
-	}
+    private void OnDestroy()
+    {
+        if (input != null)
+        {
+            input.onActivate -= OnActivate;
+            input.onLaunch -= ActivateLaunch;
+        }
+    }
 
 	private bool OnActivate()
 	{
@@ -89,8 +102,6 @@ public class PlayerInteractController : MonoBehaviour
 	
 	private void OnTriggerExit(Collider other)
 	{
-		if(currentInteractionTarget == null)
-			return;
 		
 		IInteractable interactComponent = other.GetComponent<IInteractable>();
 		if(interactComponent == null)
@@ -102,13 +113,13 @@ public class PlayerInteractController : MonoBehaviour
 			DeactivateInteraction();
 		}
 	}
-	
+
 	private void ActivateInteraction()
 	{
         if (currentInteractionTarget == null)
             return;
 
-		string pickupName = currentInteractionTarget.OnActivate();
+        string pickupName = currentInteractionTarget.OnActivate();
 		if(uiController != null)
 			uiController.ActivateTargetName(pickupName);
 	}
@@ -118,5 +129,21 @@ public class PlayerInteractController : MonoBehaviour
 		currentInteractionTarget = null;
 		if(uiController != null)
 			uiController.DeactivateTargetName();
-	}
+    }
+
+    /// <summary>
+    /// Launch grabbed object
+    /// </summary>
+    private void ActivateLaunch()
+    {
+        if (currentInteractionTarget == null)
+            return;
+
+        CratePickUp crate = currentInteractionTarget.GetGameObject().GetComponent<CratePickUp>();
+
+        crate.ReleaseObject();
+        crate.RB.AddForce(MC.transform.forward * throwStrength, ForceMode.Impulse);
+
+        //Debug.Log("throwing object");
+    }
 }

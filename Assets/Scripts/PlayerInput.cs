@@ -11,8 +11,11 @@ public class PlayerInput : MonoBehaviour
 	
 	public delegate bool OnActivate();
 	public OnActivate onActivate;
-	
-	public float inputThreshold = 0.05f;
+
+    public delegate void OnLaunch();
+    public OnLaunch onLaunch;
+
+    public float inputThreshold = 0.05f;
 	
 	public bool isRunning { get; private set; }
 	public Vector2 movementVector { get; private set; }
@@ -41,6 +44,7 @@ public class PlayerInput : MonoBehaviour
         GetMovementInput();
 		GetJumpInput();
 		GetActivateInput();
+        GetLaunchInput();
     }
 	
 	private void GetMovementInput()
@@ -78,4 +82,16 @@ public class PlayerInput : MonoBehaviour
 				break;
 		}
 	}
+
+    private void GetLaunchInput()
+    {
+        if (!Input.GetMouseButtonDown(0))
+            return;
+
+        if (onLaunch == null)
+            return;
+
+        onLaunch();
+
+    }
 }
