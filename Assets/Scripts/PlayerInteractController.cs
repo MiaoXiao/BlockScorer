@@ -20,11 +20,13 @@ public class PlayerInteractController : MonoBehaviour
     //References
     private Camera MC;
     private GameController GC;
+    private UIController UC;
 
     private void Awake()
     {
         MC = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        UC = GameObject.FindGameObjectWithTag("GUI").GetComponent<UIController>();
     }
 
 	private void Start()
@@ -117,6 +119,8 @@ public class PlayerInteractController : MonoBehaviour
         if (currentInteractionTarget == null)
             return;
 
+        UC.cursorImage.color = Color.green;
+
         string pickupName = currentInteractionTarget.OnActivate();
 		if(uiController != null)
 			uiController.ActivateTargetName(pickupName);
@@ -124,7 +128,9 @@ public class PlayerInteractController : MonoBehaviour
 	
 	private void DeactivateInteraction()
 	{
-		currentInteractionTarget = null;
+        UC.cursorImage.color = Color.white;
+
+        currentInteractionTarget = null;
 		if(uiController != null)
 			uiController.DeactivateTargetName();
     }

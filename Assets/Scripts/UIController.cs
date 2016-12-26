@@ -14,6 +14,8 @@ public class UIController : MonoBehaviour
 
     public Image throwFillImage;
 
+    public Image cursorImage;
+
     private GameController GC;
 
     private int currentTimeLeft;
