@@ -23,6 +23,5 @@ public class ScoreZone : MonoBehaviour
             return;
 
         UC.crateScored(crate.Points);
-        UC.updateTimer(crate.timeGained);
     }
 }

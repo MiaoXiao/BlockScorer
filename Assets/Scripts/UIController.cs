@@ -23,11 +23,11 @@ public class UIController : MonoBehaviour
     public delegate void NextSecond();
     public NextSecond nextSecond;
 
-    public delegate void UpdateTimer(int seconds);
-    public UpdateTimer updateTimer;
-
     public delegate void CrateScored(int value);
     public CrateScored crateScored;
+
+    public delegate void CrateLost(int value);
+    public CrateLost crateLost;
 
     public delegate void ThrowCharge(float value);
     public ThrowCharge throwCharge;
@@ -50,8 +50,8 @@ public class UIController : MonoBehaviour
         timeLeft.text = currentTimeLeft.ToString();
         nextSecond += ClockUpdate;
         crateScored += UpdateScoreGui;
+        crateScored += AddTime;
         throwCharge += UpdateThrowCharge;
-        updateTimer += AddTime;
     }
 
 

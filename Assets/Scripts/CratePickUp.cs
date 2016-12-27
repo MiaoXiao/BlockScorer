@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class CratePickUp : MonoBehaviour, IInteractable
 {
-    public string crateName = "Crate";
-    public ItemAttributes attributes;
+    public string crateName = "Normal Crate";
+    //public ItemAttributes attributes;
 
     public Renderer activateRenderer;
     public Color normalColor = Color.white;
     public Color activeColor = Color.green;
 
+    /// <summary>
+    /// Number of points added to the score when this crate is scored.
+    /// Also the amount of time added to the clock when scored.
+    /// </summary>
     public int Points = 10;
-
-    public int timeGained = 2;
 
     //References
     public Rigidbody RB;
@@ -54,11 +56,10 @@ public class CratePickUp : MonoBehaviour, IInteractable
 
     public void OnInteract(GameObject actor)
     {
-        isGrabbed = !isGrabbed;
-        if (!isGrabbed)
+        if (isGrabbed)
             ReleaseObject();
         else
-            RB.useGravity = false;
+            GrabObject();
     }
 
     public GameObject GetGameObject()
@@ -73,6 +74,15 @@ public class CratePickUp : MonoBehaviour, IInteractable
             RB.MovePosition(MainCamera.transform.position + MainCamera.transform.forward * holdDistance * Time.fixedDeltaTime);
             //Debug.Log(MainCamera.transform.position + " " + MainCamera.transform.forward + " " + holdDistance);
         }
+    }
+
+    /// <summary>
+    /// Grab the object
+    /// </summary>
+    public void GrabObject()
+    {
+        RB.useGravity = false;
+        isGrabbed = true;
     }
 
     /// <summary>
