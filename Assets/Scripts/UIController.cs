@@ -23,7 +23,10 @@ public class UIController : MonoBehaviour
     public delegate void NextSecond();
     public NextSecond nextSecond;
 
-    public delegate void CrateScored();
+    public delegate void UpdateTimer(int seconds);
+    public UpdateTimer updateTimer;
+
+    public delegate void CrateScored(int value);
     public CrateScored crateScored;
 
     public delegate void ThrowCharge(float value);
@@ -45,8 +48,10 @@ public class UIController : MonoBehaviour
 		DeactivateTargetName();
         currentTimeLeft = GC.StartingTime;
         timeLeft.text = currentTimeLeft.ToString();
-        nextSecond += UpdateTimer;
+        nextSecond += ClockUpdate;
         crateScored += UpdateScoreGui;
+        throwCharge += UpdateThrowCharge;
+        updateTimer += AddTime;
     }
 
 
@@ -74,30 +79,27 @@ public class UIController : MonoBehaviour
 	}
 
     /// <summary>
-    /// Add points to the total score and update gui
-    /// </summary>
-    public void AddScore(int points)
-    {
-        GC.TotalScore += points;
-    }
-
-    /// <summary>
     /// Reset total score to 0 and update gui
     /// </summary>
     public void ResetScore()
     {
         GC.TotalScore = 0;
+        Score.text = "0";
     }
 
-    public void UpdateScoreGui()
+    /// <summary>
+    /// Add value to the current score
+    /// </summary>
+    public void UpdateScoreGui(int value)
     {
+        GC.TotalScore += value;
         Score.text = GC.TotalScore.ToString();
     }
 
     /// <summary>
     /// Decrease the timer by 1 sec
     /// </summary>
-    private void UpdateTimer()
+    private void ClockUpdate()
     {
         currentTimeLeft -= 1;
         if (currentTimeLeft >= 0)
@@ -108,6 +110,15 @@ public class UIController : MonoBehaviour
         {
             GC.EndGame();
         }
+    }
+
+    /// <summary>
+    /// Add seconds to the clock
+    /// </summary>
+    private void AddTime(int seconds)
+    {
+        currentTimeLeft += seconds;
+        timeLeft.text = currentTimeLeft.ToString();
     }
 
     /// <summary>

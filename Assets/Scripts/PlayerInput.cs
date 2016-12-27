@@ -132,7 +132,6 @@ public class PlayerInput : MonoBehaviour
             {
                 currentChargeTime += Time.deltaTime;
                 throw_strength = norm_value * maxThrowStrength;
-                UC.throwCharge = UC.UpdateThrowCharge;
                 UC.throwCharge(norm_value);
             }
             else

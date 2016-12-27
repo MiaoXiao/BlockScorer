@@ -11,6 +11,10 @@ public class CratePickUp : MonoBehaviour, IInteractable
     public Color normalColor = Color.white;
     public Color activeColor = Color.green;
 
+    public int Points = 10;
+
+    public int timeGained = 2;
+
     //References
     public Rigidbody RB;
     private GameObject Player;
