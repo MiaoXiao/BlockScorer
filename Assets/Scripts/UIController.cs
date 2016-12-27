@@ -51,6 +51,7 @@ public class UIController : MonoBehaviour
         nextSecond += ClockUpdate;
         crateScored += UpdateScoreGui;
         crateScored += AddTime;
+        crateLost += AddTime;
         throwCharge += UpdateThrowCharge;
     }
 

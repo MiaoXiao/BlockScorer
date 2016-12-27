@@ -14,6 +14,7 @@ public class KillZone : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         UC = GameObject.FindGameObjectWithTag("GUI").GetComponent<UIController>();
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -21,6 +22,8 @@ public class KillZone : MonoBehaviour
         else
         {
             //Depool the dropped object and give time penalty
+            other.gameObject.SetActive(false);
+            UC.crateLost(-other.gameObject.GetComponent<CratePickUp>().Points);
         }
 
     }

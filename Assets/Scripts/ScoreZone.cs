@@ -23,5 +23,6 @@ public class ScoreZone : MonoBehaviour
             return;
 
         UC.crateScored(crate.Points);
+        other.gameObject.SetActive(false);
     }
 }
