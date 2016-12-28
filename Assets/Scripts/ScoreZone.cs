@@ -29,7 +29,7 @@ public class ScoreZone : MonoBehaviour
             return;
 
         UC.TotalScore += crate.PointsGained * scoreMultiplier;
-        UC.TotalTimeLeft += crate.TimeGained * scoreMultiplier;
+        UC.MainClock.AddToCurrentTime(crate.TimeGained * scoreMultiplier);
         other.gameObject.SetActive(false);
 
         GC.crateEvaluated();

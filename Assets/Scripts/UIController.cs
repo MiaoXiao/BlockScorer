@@ -16,13 +16,17 @@ public class UIController : MonoBehaviour
 
     public Image cursorImage;
 
+    public CountdownTimer MainClock;
+
     private GameController GC;
 
+    /*
     /// <summary>
     /// Setting a new time
     /// </summary>
     public delegate void TimeChange(int new_time);
     public TimeChange timeChange;
+    */
 
     /// <summary>
     /// Setting a new score
@@ -53,6 +57,7 @@ public class UIController : MonoBehaviour
         }
     }
 
+    /*
     /// <summary>
     /// Time left so far
     /// </summary>
@@ -69,6 +74,7 @@ public class UIController : MonoBehaviour
             timeChange(_TotalTimeLeft);
         }
     }
+    */
 
     /// <summary>
     /// Charge percentage so far
@@ -95,38 +101,20 @@ public class UIController : MonoBehaviour
     private void Awake()
     {
         GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
+        scoreChange += UpdateScoreGui;
+
+        MainClock.timeSet += UpdateTimeGui;
+        MainClock.secondElapsed += UpdateTimeGui;
+        MainClock.timerDone += GC.EndGame;
+
+        chargeMeterChange += UpdateThrowCharge;
     }
 
     private void Start()
 	{
         SetActiveThrowMeter(false);
 		DeactivateTargetName();
-
-        scoreChange += UpdateScoreGui;
-        timeChange += UpdateTimeGui;
-
-        chargeMeterChange += UpdateThrowCharge;
-
-        TotalTimeLeft = GC.StartingTime;
-    }
-
-
-    private void Update()
-    {
-        if (GC.GamePaused)
-            return;
-
-        CountToSecond += Time.deltaTime;
-        if (CountToSecond >= 1f)
-        {
-            TotalTimeLeft -= 1;
-            CountToSecond = 0f;
-        }
-
-        if (TotalTimeLeft <= 0)
-        {
-            GC.EndGame();
-        }
     }
 
     public void ActivateTargetName(string itemName)

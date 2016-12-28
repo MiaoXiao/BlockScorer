@@ -118,4 +118,17 @@ public class GameController : MonoBehaviour
             PauseScreen();
         }
     }
+
+    /// <summary>
+    /// Crate is lost, lose time
+    /// </summary>
+    public void LoseCrate(GameObject crate)
+    {
+        //Give time penalty and depool the object
+        GetComponent<CountdownTimer>().AddToCurrentTime(-crate.GetComponent<CratePickUp>().TimeLost);
+        gameObject.SetActive(false);
+
+        if (crateEvaluated != null)
+            crateEvaluated();
+    }
 }
