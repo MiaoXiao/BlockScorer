@@ -28,8 +28,8 @@ public class ScoreZone : MonoBehaviour
         if (crate == null || other.isTrigger)
             return;
 
-        UC.TotalScore += crate.Points * scoreMultiplier;
-        UC.TotalTimeLeft += crate.Points * scoreMultiplier;
+        UC.TotalScore += crate.PointsGained * scoreMultiplier;
+        UC.TotalTimeLeft += crate.TimeGained * scoreMultiplier;
         other.gameObject.SetActive(false);
     }
 }

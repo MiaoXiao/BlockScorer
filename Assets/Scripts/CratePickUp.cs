@@ -9,13 +9,27 @@ public class CratePickUp : MonoBehaviour, IInteractable
 
     public Renderer activateRenderer;
     public Color normalColor = Color.white;
-    public Color activeColor = Color.green;
+    private Color activeColor = Color.green;
 
     /// <summary>
     /// Number of points added to the score when this crate is scored.
-    /// Also the amount of time added to the clock when scored.
     /// </summary>
-    public int Points = 10;
+    public int PointsGained = 10;
+
+    /// <summary>
+    /// Number of points lost when this crate is missed
+    /// </summary>
+    public int PointsLost = 0;
+
+    /// <summary>
+    /// Amount of time added to the clock when scored.
+    /// </summary>
+    public int TimeGained = 10;
+
+    /// <summary>
+    /// Amount of time lost when missing this crate
+    /// </summary>
+    public int TimeLost = 10;
 
     //References
     public Rigidbody RB;
@@ -38,6 +52,8 @@ public class CratePickUp : MonoBehaviour, IInteractable
         Player = GameObject.FindGameObjectWithTag("Player");
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
+        activeColor = normalColor;
+        activeColor.a = 0.5f;
     }
 
     public string OnActivate()

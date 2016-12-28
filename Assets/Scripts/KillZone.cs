@@ -22,7 +22,7 @@ public class KillZone : MonoBehaviour
         else
         {
             //Give time penalty and depool the object
-            UC.TotalTimeLeft -= other.gameObject.GetComponent<CratePickUp>().Points;
+            UC.TotalTimeLeft -= other.gameObject.GetComponent<CratePickUp>().TimeLost;
             other.gameObject.SetActive(false);
         }
 
