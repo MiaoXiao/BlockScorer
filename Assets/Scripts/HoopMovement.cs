@@ -4,23 +4,45 @@ using UnityEngine;
 
 public class HoopMovement : MonoBehaviour
 {
-    public bool IsRotatingHoops = false;
-    public float RotateSpeed = 15f;
+    [SerializeField]
+    private bool IsRotatingHoops = false;
+    [SerializeField]
+    private float RotateSpeed = 15f;
 
-    public bool IsSpinningHoopsVertically = false;
-    public bool IsSpinningHoopsHorizontally = false;
-    public bool IsSpinningHoopsForward = false;
-    public float SpinSpeed = 15f;
+    [SerializeField]
+    private bool IsSpinningHoopsVertically = false;
+    [SerializeField]
+    private bool IsSpinningHoopsHorizontally = false;
+    [SerializeField]
+    private bool IsSpinningHoopsForward = false;
+    [SerializeField]
+    private float SpinSpeed = 15f;
 
     private GameController GC;
-    private GameObject Player;
-    private UIController UC;
 
     private void Awake()
     {
         GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        Player = GameObject.FindGameObjectWithTag("Player");
-        UC = GameObject.FindGameObjectWithTag("GUI").GetComponent<UIController>();
+    }
+
+    public void SetIsRotatingHoops(bool active)
+    {
+        IsRotatingHoops = active;
+    }
+
+    public void SetIsSpinningHoopsVertically(bool active)
+    {
+        IsSpinningHoopsVertically = active;
+    }
+
+    public void SetIsSpinningHoopsHorizontally(bool active)
+    {
+        IsSpinningHoopsHorizontally = active;
+    }
+
+    public void SetIsSpinningHoopsForward(bool active)
+    {
+        IsSpinningHoopsForward = active;
     }
 
     private void Update()

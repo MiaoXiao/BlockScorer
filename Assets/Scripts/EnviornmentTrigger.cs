@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 [Serializable]
-public class EnviornmentTrigger : MonoBehaviour
+public class EnviornmentTrigger
 {
-    public int Stage;
-    
+    public int StageWhereTriggerOccurs;
+    public UnityEvent SetEnviornmentEvent;
 }

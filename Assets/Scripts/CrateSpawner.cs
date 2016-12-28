@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CrateSpawner : MonoBehaviour
 {
-    public List<CrateDistribution> StageList = new List<CrateDistribution>();
+    [SerializeField]
+    private List<CrateDistribution> StageList = new List<CrateDistribution>();
+
+    [SerializeField]
+    private List<EnviornmentTrigger> EnviornmentTriggerList = new List<EnviornmentTrigger>();
 
     [SerializeField]
     private Vector2 SpawnArea;
@@ -61,7 +66,7 @@ public class CrateSpawner : MonoBehaviour
     /// </summary>
     private void GoToNextStage(int stage)
     {
-        Debug.Log("going to stage " + stage);
+        //Debug.Log("going to stage " + stage);
         SpawnObjects(StageList[CurrentStage]);
     }
 
@@ -75,7 +80,7 @@ public class CrateSpawner : MonoBehaviour
         {
             CurrentStage++;
         }
-        Debug.Log("numb crates is now " + CurrNumbCrates);
+        //Debug.Log("numb crates is now " + CurrNumbCrates);
     }
 
     /// <summary>
@@ -83,7 +88,14 @@ public class CrateSpawner : MonoBehaviour
     /// </summary>
     private void CheckEnvionment(int stage)
     {
-        
+        foreach(EnviornmentTrigger trigger in EnviornmentTriggerList)
+        {
+            if (trigger.StageWhereTriggerOccurs == stage)
+            {
+                trigger.SetEnviornmentEvent.Invoke();
+                return;
+            }
+        }
     }
 
     /// <summary>
