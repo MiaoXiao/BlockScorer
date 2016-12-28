@@ -18,6 +18,9 @@ public class HoopMovement : MonoBehaviour
     [SerializeField]
     private float SpinSpeed = 15f;
 
+    [SerializeField]
+    private float TimeToRaiseHoops = 4f;
+
     private GameController GC;
 
     private void Awake()
@@ -62,6 +65,31 @@ public class HoopMovement : MonoBehaviour
         if (IsSpinningHoopsForward)
             SpinHoops(Vector3.forward);
 
+    }
+
+    /// <summary>
+    /// Raise all hoops
+    /// </summary>
+    public void StartRaiseHoops(float height)
+    {
+        for (int i = 0; i < transform.childCount; ++i)
+        {
+            StartCoroutine(RaiseHoops(height, i));
+        }
+
+    }
+
+    IEnumerator RaiseHoops(float height, int child)
+    {
+        float time_elpased = 0f;
+        Vector3 original_pos = transform.GetChild(child).transform.position;
+        Vector3 new_pos = new Vector3(transform.position.x, 0, transform.position.z);
+        while (time_elpased < TimeToRaiseHoops)
+        {
+            time_elpased += Time.deltaTime;
+            transform.GetChild(child).transform.position = Vector3.Lerp(original_pos, original_pos + Vector3.up * height, time_elpased / TimeToRaiseHoops);
+            yield return null;
+        }
     }
 
     /// <summary>

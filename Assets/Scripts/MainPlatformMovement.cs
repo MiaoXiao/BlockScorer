@@ -7,6 +7,8 @@ public class MainPlatformMovement : MonoBehaviour
     public bool IsRotating = false;
     public float RotateSpeed = 15f;
 
+    public float TimeToRaise = 4f;
+
     private GameController GC;
 
     private void Awake()
@@ -21,6 +23,28 @@ public class MainPlatformMovement : MonoBehaviour
 
         if (IsRotating)
             RotatePlatform();
+    }
+
+    /// <summary>
+    /// Raise center platform
+    /// </summary>
+    public void StartRaisePlatform()
+    {
+        StartCoroutine("RaisePlatform");
+    }
+
+    IEnumerator RaisePlatform()
+    {
+      
+        float time_elpased = 0f;
+        Vector3 original_pos = transform.position;
+        Vector3 new_pos = new Vector3(transform.position.x, 0, transform.position.z);
+        while (time_elpased < TimeToRaise)
+        {
+            time_elpased += Time.deltaTime;
+            transform.position = Vector3.Lerp(original_pos, new_pos, time_elpased / TimeToRaise);
+            yield return null;
+        }
     }
 
     /// <summary>
