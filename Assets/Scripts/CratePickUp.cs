@@ -49,6 +49,8 @@ public class CratePickUp : MonoBehaviour, IInteractable
     private void Awake()
     {
         RB = GetComponent<Rigidbody>();
+        RB.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
         Player = GameObject.FindGameObjectWithTag("Player");
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
