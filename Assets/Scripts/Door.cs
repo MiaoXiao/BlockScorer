@@ -33,12 +33,13 @@ public class Door : MonoBehaviour, IInteractable
 			CloseDoor();
 	}
 	
-	public void OnInteract(GameObject actor)
+	public bool OnInteract(GameObject actor)
 	{
 		if(isDoorOpen)
-			return;
+			return true;
 		
 		OpenDoor();
+        return false;
 	}
 	
     public GameObject GetGameObject()

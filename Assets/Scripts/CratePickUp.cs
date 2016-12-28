@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CratePickUp : MonoBehaviour, IInteractable
 {
-    public string crateName = "Normal Crate";
+    public string crateName = "Crate";
     //public CrateType type;
 
     public Renderer activateRenderer;
@@ -52,6 +52,8 @@ public class CratePickUp : MonoBehaviour, IInteractable
         Player = GameObject.FindGameObjectWithTag("Player");
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
+        activateRenderer.material.color = normalColor;
+
         activeColor = normalColor;
         activeColor.a = 0.5f;
     }
@@ -70,12 +72,17 @@ public class CratePickUp : MonoBehaviour, IInteractable
             activateRenderer.material.color = normalColor;
     }
 
-    public void OnInteract(GameObject actor)
+    public bool OnInteract(GameObject actor)
     {
         if (isGrabbed)
+        {
             ReleaseObject();
-        else
-            GrabObject();
+            return false;
+        }
+
+        GrabObject();
+        return true;
+        
     }
 
     public GameObject GetGameObject()
@@ -99,6 +106,7 @@ public class CratePickUp : MonoBehaviour, IInteractable
     {
         RB.useGravity = false;
         isGrabbed = true;
+        RB.velocity = Vector3.zero;
     }
 
     /// <summary>
@@ -109,5 +117,6 @@ public class CratePickUp : MonoBehaviour, IInteractable
         //Debug.Log("release object");
         RB.useGravity = true;
         isGrabbed = false;
+        RB.velocity = Vector3.zero;
     }
 }

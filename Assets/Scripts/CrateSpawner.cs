@@ -9,7 +9,29 @@ public class CrateSpawner : MonoBehaviour
     [SerializeField]
     private Vector2 SpawnArea;
 
-    private int CurrentStage = -1;
+    private int _CurrentStage = -1;
+    public int CurrentStage
+    {
+        get
+        {
+            return _CurrentStage;
+        }
+        set
+        {
+            if (value == _CurrentStage || value < 0 || value >= StageList.Count)
+                return;
+
+            _CurrentStage = value;
+
+            nextStage(_CurrentStage);
+        }
+    }
+
+    /// <summary>
+    /// Moving on to a new stage
+    /// </summary>
+    public delegate void NextStage(int stage);
+    public NextStage nextStage;
 
     private int CurrNumbCrates = 0;
 
@@ -29,16 +51,17 @@ public class CrateSpawner : MonoBehaviour
     private void Start()
     {
         GC.crateEvaluated += CheckStageDone;
-        NextStage();
+        nextStage += GoToNextStage;
+        nextStage += CheckEnvionment;
+        CurrentStage = 0;
     }
 
     /// <summary>
-    /// Go to the next stage
+    /// Go to the specified stage
     /// </summary>
-    public void NextStage()
+    private void GoToNextStage(int stage)
     {
-        Debug.Log("next stage");
-        CurrentStage++;
+        Debug.Log("going to stage " + stage);
         SpawnObjects(StageList[CurrentStage]);
     }
 
@@ -50,9 +73,17 @@ public class CrateSpawner : MonoBehaviour
         CurrNumbCrates--;
         if (CurrNumbCrates <= 0)
         {
-            NextStage();
+            CurrentStage++;
         }
         Debug.Log("numb crates is now " + CurrNumbCrates);
+    }
+
+    /// <summary>
+    /// Enable eniornment hazards if necessary
+    /// </summary>
+    private void CheckEnvionment(int stage)
+    {
+        
     }
 
     /// <summary>

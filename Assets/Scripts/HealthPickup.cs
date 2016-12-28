@@ -24,9 +24,10 @@ public class HealthPickup : MonoBehaviour, IInteractable
 			activateRenderer.material.color = normalColor;
 	}
 	
-	public void OnInteract(GameObject actor)
+	public bool OnInteract(GameObject actor)
 	{
 		Destroy(gameObject);
+        return true;
 	}
 
     public GameObject GetGameObject()

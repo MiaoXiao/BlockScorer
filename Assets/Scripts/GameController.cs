@@ -28,6 +28,15 @@ public class GameController : MonoBehaviour
     public CrateEvaluated crateEvaluated;
 
     [SerializeField]
+    private GameObject GeneralHoopParent;
+
+    [SerializeField]
+    private GameObject SuperHoopParent;
+
+    [SerializeField]
+    private GameObject MainPlatform;
+
+    [SerializeField]
     private GameObject PauseMenu;
 
     [SerializeField]

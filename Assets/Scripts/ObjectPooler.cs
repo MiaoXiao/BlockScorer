@@ -24,7 +24,7 @@ public class ObjectPooler : MonoBehaviour
     /// <summary>
     /// Number of these objects active
     /// </summary>
-    public int numberOfActiveObjects
+    public int NumberOfActiveObjects
     {
         get
         {
