@@ -4,56 +4,74 @@ using UnityEngine;
 
 public class CrateSpawner : MonoBehaviour
 {
+    public List<CrateDistribution> StageList = new List<CrateDistribution>();
+
     [SerializeField]
     private Vector2 SpawnArea;
 
-    private ObjectPooler[] allObjPools;
+    private int CurrentStage = -1;
+
+    private int CurrNumbCrates = 0;
+
+    private ObjectPooler[] AllObjPools;
+
+    private GameController GC;
+    private UIController UC;
 
     private void Awake()
     {
-        allObjPools = GetComponents<ObjectPooler>();
+        GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        UC = GameObject.FindGameObjectWithTag("GUI").GetComponent<UIController>();
 
-        
-        List<float> test = new List<float>();
-        test.Add(0.5f);
-        test.Add(0.25f);
-        test.Add(0.25f);
-        SpawnObjects(new CrateProbability(test, 20));
-        
+        AllObjPools = GetComponents<ObjectPooler>();
+    }
+
+    private void Start()
+    {
+        GC.crateEvaluated += CheckStageDone;
+        NextStage();
     }
 
     /// <summary>
-    /// Number of total active crates
+    /// Go to the next stage
     /// </summary>
-    public int totalSpawnedObjects
+    public void NextStage()
     {
-        get
+        Debug.Log("next stage");
+        CurrentStage++;
+        SpawnObjects(StageList[CurrentStage]);
+    }
+
+    /// <summary>
+    /// Decrease number of current crates or go to the next stage if there are 0 crates;
+    /// </summary>
+    private void CheckStageDone()
+    {
+        CurrNumbCrates--;
+        if (CurrNumbCrates <= 0)
         {
-            int total = 0;
-            for (int i = 0; i < allObjPools.Length; ++i)
-            {
-                total += allObjPools[i].numberOfActiveObjects;
-            }
-            return total;
+            NextStage();
         }
+        Debug.Log("numb crates is now " + CurrNumbCrates);
     }
 
     /// <summary>
-    /// Begin spawning new objects at random locations within the spawn area.
-    /// CrateProbability contains information about which crates should appear, and how many total crates there are
+    /// Begin spawning new crates at random locations within the spawn area.
+    /// CrateDistribution contains information about which crates should appear, and how many total crates there are
     /// </summary>
-    public void SpawnObjects(CrateProbability cp)
+    private void SpawnObjects(CrateDistribution cp)
     {
-        for (int i = 0; i < allObjPools.Length; ++i)
+        for (int i = 0; i < AllObjPools.Length; ++i)
         {
-            for (int j = 0; j < cp.CrateTypeAmount[i]; ++j)
+            for (int j = 0; j < cp.RetrieveCrateAmount(i); ++j)
             {
                 float rand_x = Random.Range(-SpawnArea.x, SpawnArea.x);
                 float rand_y = Random.Range(-SpawnArea.y, SpawnArea.y);
 
-                GameObject crate = allObjPools[i].RetrieveCopy();
+                GameObject crate = AllObjPools[i].RetrieveCopy();
                 crate.transform.position = new Vector3(rand_x, transform.position.y, rand_y);
             }
         }
+        CurrNumbCrates = cp.Total;
     }
 }

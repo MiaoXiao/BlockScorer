@@ -21,11 +21,11 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public delegate void CrateScored();
-    public CrateScored crateScored;
-
-    public delegate void CrateLost();
-    public CrateLost crateLost;
+    /// <summary>
+    /// After a crate is scored or lost.
+    /// </summary>
+    public delegate void CrateEvaluated();
+    public CrateEvaluated crateEvaluated;
 
     [SerializeField]
     private GameObject PauseMenu;
