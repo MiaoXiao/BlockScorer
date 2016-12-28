@@ -127,7 +127,7 @@ public class PlayerInteractController : MonoBehaviour
         if (currentInteractionTarget == null)
             return;
 
-        UC.cursorImage.color = Color.green;
+        UC.CursorImage.color = Color.green;
 
         string pickupName = currentInteractionTarget.OnActivate();
 		if(UC != null)
@@ -136,7 +136,7 @@ public class PlayerInteractController : MonoBehaviour
 	
 	private void DeactivateInteraction()
 	{
-        UC.cursorImage.color = Color.white;
+        UC.CursorImage.color = Color.white;
 
         currentInteractionTarget = null;
 		if(UC != null)

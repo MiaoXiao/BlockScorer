@@ -23,13 +23,18 @@ public class ScoreZone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        CratePickUp crate = other.GetComponent<CratePickUp>();
+        CratePickUp crate_info = other.GetComponent<CratePickUp>();
 
-        if (crate == null || other.isTrigger)
+        if (crate_info == null || other.isTrigger)
             return;
 
-        UC.TotalScore += crate.PointsGained * scoreMultiplier;
-        UC.MainClock.AddToCurrentTime(crate.TimeGained * scoreMultiplier);
+        //Debug.Log(crate_info.PointsGained);
+
+        UC.TotalScore += crate_info.PointsGained * scoreMultiplier;
+        UC.MainClock.AddToCurrentTime(crate_info.TimeGained * scoreMultiplier);
+        UC.SetRecentScoreChange(crate_info.PointsGained);
+        UC.SetRecentTimeChange(crate_info.TimeGained);
+
         other.gameObject.SetActive(false);
 
         GC.crateEvaluated();

@@ -42,6 +42,15 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject GameOverMenu;
 
+    private UIController UC;
+    private CountdownTimer MainClock;
+
+    private void Awake()
+    {
+        UC = GameObject.FindGameObjectWithTag("GUI").GetComponent<UIController>();
+        MainClock = GetComponent<CountdownTimer>();
+    }
+
     private void Start()
     {
         FreezeGameState(false);
@@ -124,9 +133,13 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void LoseCrate(GameObject crate)
     {
+        CratePickUp crate_info = crate.GetComponent<CratePickUp>();
         //Give time penalty and depool the object
-        GetComponent<CountdownTimer>().AddToCurrentTime(-crate.GetComponent<CratePickUp>().TimeLost);
-        gameObject.SetActive(false);
+        MainClock.AddToCurrentTime(-crate_info.TimeLost);
+        crate.SetActive(false);
+
+        UC.SetRecentScoreChange(0);
+        UC.SetRecentTimeChange(-crate_info.TimeLost);
 
         if (crateEvaluated != null)
             crateEvaluated();
