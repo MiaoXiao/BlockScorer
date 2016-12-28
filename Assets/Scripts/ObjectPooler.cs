@@ -62,6 +62,7 @@ public class ObjectPooler : MonoBehaviour
             if (!obj.activeInHierarchy)
             {
                 obj.SetActive(true);
+                RemoveMomentum(obj);
                 return obj;
             }
         }
@@ -69,6 +70,7 @@ public class ObjectPooler : MonoBehaviour
         //All objects are currently in use, so create another.
         GameObject new_obj = AddObjToPool();
         new_obj.SetActive(true);
+        RemoveMomentum(new_obj);
         return new_obj;
     }
 
@@ -81,5 +83,15 @@ public class ObjectPooler : MonoBehaviour
         copy.transform.SetParent(StorageArea);
         PooledObjects.Add(copy);
         return copy;
+    }
+    
+    /// <summary>
+    /// Remove all momentun from an object
+    /// </summary>
+    private void RemoveMomentum(GameObject obj)
+    {
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 }

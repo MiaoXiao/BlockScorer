@@ -11,8 +11,17 @@ public class CrateSpawner : MonoBehaviour
     [SerializeField]
     private List<EnviornmentTrigger> EnviornmentTriggerList = new List<EnviornmentTrigger>();
 
+    /// <summary>
+    /// Area to spawn new crates
+    /// </summary>
     [SerializeField]
     private Vector2 SpawnArea;
+
+    /// <summary>
+    /// Maximum initial force for crates that just spawned
+    /// </summary>
+    [SerializeField]
+    private float MaximumInitForce = 0.5f;
 
     private int _CurrentStage = -1;
     public int CurrentStage
@@ -108,11 +117,26 @@ public class CrateSpawner : MonoBehaviour
         {
             for (int j = 0; j < cp.RetrieveCrateAmount(i); ++j)
             {
-                float rand_x = Random.Range(-SpawnArea.x, SpawnArea.x);
-                float rand_y = Random.Range(-SpawnArea.y, SpawnArea.y);
+                float rand_pos_x = Random.Range(-SpawnArea.x, SpawnArea.x);
+                float rand_pos_y = Random.Range(-SpawnArea.y, SpawnArea.y);
+                Vector3 initial_position = new Vector3(rand_pos_x, transform.position.y, rand_pos_y);
+
+                float rand_force_x = Random.Range(-MaximumInitForce, MaximumInitForce);
+                float rand_force_y = Random.Range(-MaximumInitForce, MaximumInitForce);
+                float rand_force_z = Random.Range(-MaximumInitForce, MaximumInitForce);
+                Vector3 initital_force = new Vector3(rand_force_x, rand_force_y, rand_force_z);
+
+                float rand_rot_x = Random.Range(0, 360);
+                float rand_rot_y = Random.Range(0, 360);
+                float rand_rot_z = Random.Range(0, 360);
+                float rand_rot_w = Random.Range(0, 360);
+                Quaternion initial_rotation = new Quaternion(rand_rot_x, rand_rot_y, rand_rot_z, rand_rot_w);
 
                 GameObject crate = AllObjPools[i].RetrieveCopy();
-                crate.transform.position = new Vector3(rand_x, transform.position.y, rand_y);
+
+                crate.transform.position = initial_position;
+                crate.transform.rotation = initial_rotation;
+                crate.GetComponent<Rigidbody>().AddForce(initital_force, ForceMode.Impulse);
             }
         }
         CurrNumbCrates = cp.Total;
