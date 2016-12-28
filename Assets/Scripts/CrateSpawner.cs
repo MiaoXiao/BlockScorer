@@ -13,9 +13,13 @@ public class CrateSpawner : MonoBehaviour
     {
         allObjPools = GetComponents<ObjectPooler>();
 
+        
         List<float> test = new List<float>();
-        test.Add(1f);
-        SpawnObjects(new CrateProbability(test, 10));
+        test.Add(0.5f);
+        test.Add(0.25f);
+        test.Add(0.25f);
+        SpawnObjects(new CrateProbability(test, 20));
+        
     }
 
     /// <summary>

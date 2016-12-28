@@ -31,7 +31,7 @@ public class PlayerInput : MonoBehaviour
     public float maxThrowStrength = 75f;
 
     /// <summary>
-    /// Current throw charge
+    /// Current time spent charging
     /// </summary>
     private float currentChargeTime = 0f;
 
@@ -124,19 +124,22 @@ public class PlayerInput : MonoBehaviour
     {
         UC.SetActiveThrowMeter(true);
 
+        bool fully_charged = false;
         float throw_strength = 0f;
         while (!Input.GetMouseButtonUp(0))
         {
-            float norm_value = currentChargeTime / maxChargeTime;
-            if (norm_value < 1)
+            if (!fully_charged)
             {
+                float norm_value = currentChargeTime / maxChargeTime;
                 currentChargeTime += Time.deltaTime;
+                if (currentChargeTime > maxChargeTime)
+                    fully_charged = true;
                 throw_strength = norm_value * maxThrowStrength;
-                UC.throwCharge(norm_value);
+                UC.ChargeMeter = norm_value;
             }
-            else
+            else if (UC.ChargeMeter != 1f)
             {
-                UC.throwCharge(1f);
+                UC.ChargeMeter = 1f;
             }
 
             yield return null;

@@ -21,9 +21,9 @@ public class KillZone : MonoBehaviour
             GC.EndGame();
         else
         {
-            //Depool the dropped object and give time penalty
+            //Give time penalty and depool the object
+            UC.TotalTimeLeft -= other.gameObject.GetComponent<CratePickUp>().Points;
             other.gameObject.SetActive(false);
-            UC.crateLost(-other.gameObject.GetComponent<CratePickUp>().Points);
         }
 
     }

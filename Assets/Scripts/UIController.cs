@@ -18,19 +18,74 @@ public class UIController : MonoBehaviour
 
     private GameController GC;
 
-    private int currentTimeLeft;
+    /// <summary>
+    /// Setting a new time
+    /// </summary>
+    public delegate void TimeChange(int new_time);
+    public TimeChange timeChange;
 
-    public delegate void NextSecond();
-    public NextSecond nextSecond;
+    /// <summary>
+    /// Setting a new score
+    /// </summary>
+    public delegate void ScoreChange(int new_score);
+    public ScoreChange scoreChange;
 
-    public delegate void CrateScored(int value);
-    public CrateScored crateScored;
+    /// <summary>
+    /// Update charge meter
+    /// </summary>
+    public delegate void ChargeMeterChange(float charge_percentage);
+    public ChargeMeterChange chargeMeterChange;
 
-    public delegate void CrateLost(int value);
-    public CrateLost crateLost;
+    /// <summary>
+    /// Total score so far
+    /// </summary>
+    private int _TotalScore = 0;
+    public int TotalScore
+    {
+        get
+        {
+            return _TotalScore;
+        }
+        set
+        {
+            _TotalScore = value;
+            scoreChange(_TotalScore);
+        }
+    }
 
-    public delegate void ThrowCharge(float value);
-    public ThrowCharge throwCharge;
+    /// <summary>
+    /// Time left so far
+    /// </summary>
+    private int _TotalTimeLeft = 0;
+    public int TotalTimeLeft
+    {
+        get
+        {
+            return _TotalTimeLeft;
+        }
+        set
+        {
+            _TotalTimeLeft = value;
+            timeChange(_TotalTimeLeft);
+        }
+    }
+
+    /// <summary>
+    /// Charge percentage so far
+    /// </summary>
+    private float _ChargeMeter = 0f;
+    public float ChargeMeter
+    {
+        get
+        {
+            return _ChargeMeter;
+        }
+        set
+        {
+            _ChargeMeter = value;
+            UpdateThrowCharge(_ChargeMeter);
+        }
+    }
 
     /// <summary>
     /// Counts up to a full second, then resets
@@ -46,13 +101,13 @@ public class UIController : MonoBehaviour
 	{
         SetActiveThrowMeter(false);
 		DeactivateTargetName();
-        currentTimeLeft = GC.StartingTime;
-        timeLeft.text = currentTimeLeft.ToString();
-        nextSecond += ClockUpdate;
-        crateScored += UpdateScoreGui;
-        crateScored += AddTime;
-        crateLost += AddTime;
-        throwCharge += UpdateThrowCharge;
+
+        scoreChange += UpdateScoreGui;
+        timeChange += UpdateTimeGui;
+
+        chargeMeterChange += UpdateThrowCharge;
+
+        TotalTimeLeft = GC.StartingTime;
     }
 
 
@@ -64,8 +119,13 @@ public class UIController : MonoBehaviour
         CountToSecond += Time.deltaTime;
         if (CountToSecond >= 1f)
         {
-            nextSecond();
+            TotalTimeLeft -= 1;
             CountToSecond = 0f;
+        }
+
+        if (TotalTimeLeft <= 0)
+        {
+            GC.EndGame();
         }
     }
 
@@ -80,59 +140,32 @@ public class UIController : MonoBehaviour
 	}
 
     /// <summary>
-    /// Reset total score to 0 and update gui
+    /// Update score gui
     /// </summary>
-    public void ResetScore()
+    public void UpdateScoreGui(int new_score)
     {
-        GC.TotalScore = 0;
-        Score.text = "0";
+        Score.text = new_score.ToString();
     }
 
     /// <summary>
-    /// Add value to the current score
+    /// Set time gui
     /// </summary>
-    public void UpdateScoreGui(int value)
+    private void UpdateTimeGui(int seconds)
     {
-        GC.TotalScore += value;
-        Score.text = GC.TotalScore.ToString();
-    }
-
-    /// <summary>
-    /// Decrease the timer by 1 sec
-    /// </summary>
-    private void ClockUpdate()
-    {
-        currentTimeLeft -= 1;
-        if (currentTimeLeft >= 0)
-        {
-            timeLeft.text = currentTimeLeft.ToString();
-        }
-        else
-        {
-            GC.EndGame();
-        }
-    }
-
-    /// <summary>
-    /// Add seconds to the clock
-    /// </summary>
-    private void AddTime(int seconds)
-    {
-        currentTimeLeft += seconds;
-        timeLeft.text = currentTimeLeft.ToString();
+        timeLeft.text = seconds.ToString();
     }
 
     /// <summary>
     /// Update throw charge gui
     /// </summary>
-    public void UpdateThrowCharge(float value)
+    public void UpdateThrowCharge(float charge_percentage)
     {
-        if (value < 0 || value > 1)
+        if (charge_percentage < 0 || charge_percentage > 1)
             return;
 
-        throwMeter.normalizedValue = value;
+        throwMeter.normalizedValue = charge_percentage;
 
-        throwFillImage.color = Color.Lerp(Color.yellow, Color.red, value);
+        throwFillImage.color = Color.Lerp(Color.yellow, Color.red, charge_percentage);
 
     }
 

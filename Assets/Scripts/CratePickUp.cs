@@ -5,7 +5,7 @@ using UnityEngine;
 public class CratePickUp : MonoBehaviour, IInteractable
 {
     public string crateName = "Normal Crate";
-    public CrateType type;
+    //public CrateType type;
 
     public Renderer activateRenderer;
     public Color normalColor = Color.white;

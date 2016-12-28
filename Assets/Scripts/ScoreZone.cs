@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class ScoreZone : MonoBehaviour
 {
+    /// <summary>
+    /// Score multiplier if scored in this zone
+    /// </summary>
+    [SerializeField]
+    private int scoreMultiplier = 1;
+
     private GameController GC;
     private GameObject Player;
     private UIController UC;
@@ -22,7 +28,8 @@ public class ScoreZone : MonoBehaviour
         if (crate == null || other.isTrigger)
             return;
 
-        UC.crateScored(crate.Points);
+        UC.TotalScore += crate.Points * scoreMultiplier;
+        UC.TotalTimeLeft += crate.Points * scoreMultiplier;
         other.gameObject.SetActive(false);
     }
 }

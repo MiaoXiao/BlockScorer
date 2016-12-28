@@ -6,6 +6,11 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     /// <summary>
+    /// Starting time in seconds
+    /// </summary>
+    public int StartingTime = 60;
+
+    /// <summary>
     /// Whether pause screen or game over screen is shown or not
     /// </summary>
     public bool GamePaused
@@ -16,15 +21,11 @@ public class GameController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Starting time in seconds
-    /// </summary>
-    public int StartingTime = 60;
+    public delegate void CrateScored();
+    public CrateScored crateScored;
 
-    /// <summary>
-    /// Total score so far
-    /// </summary>
-    public int TotalScore = 0;
+    public delegate void CrateLost();
+    public CrateLost crateLost;
 
     [SerializeField]
     private GameObject PauseMenu;
@@ -32,7 +33,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject GameOverMenu;
 
-    public void Start()
+    private void Start()
     {
         FreezeGameState(false);
         PauseMenu.SetActive(false);
