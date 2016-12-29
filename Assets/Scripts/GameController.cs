@@ -7,11 +7,6 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     /// <summary>
-    /// Starting time in seconds
-    /// </summary>
-    public int StartingTime = 60;
-
-    /// <summary>
     /// Whether pause screen or game over screen or win screen is shown or not
     /// </summary>
     public bool GamePaused
@@ -54,6 +49,33 @@ public class GameController : MonoBehaviour
         WinMenu.SetActive(false);
     }
 
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Cancel"))
+        {
+            PauseScreen();
+        }
+    }
+
+
+    /// <summary>
+    /// Crate is lost, lose time
+    /// </summary>
+    public void LoseCrate(GameObject crate)
+    {
+        CratePickUp crate_info = crate.GetComponent<CratePickUp>();
+        //Give time penalty and depool the object
+        MainClock.AddToCurrentTime(-crate_info.TimeLost);
+        crate.SetActive(false);
+
+        UC.SetRecentScoreChange(0);
+        UC.SetRecentTimeChange(-crate_info.TimeLost);
+
+        if (crateEvaluated != null)
+            crateEvaluated();
+    }
+
     /// <summary>
     /// Restarts the scene
     /// </summary>
@@ -69,11 +91,9 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void GameOver()
     {
-        string final_score = "Final Score\n" + UC.TotalScore.ToString();
-        //Debug.Log("game over");
         GameOverMenu.SetActive(true);
         FreezeGameState(true);
-        GameOverMenu.transform.FindChild("Final Score").GetComponent<Text>().text = final_score;
+        GameOverMenu.transform.FindChild("Final Score").GetComponent<Text>().text = CalculateFinalScore();
     }
 
     /// <summary>
@@ -107,9 +127,8 @@ public class GameController : MonoBehaviour
     public void VictoryScreen()
     {
         FreezeGameState(true);
-        string final_score = "Final Score\n" + UC.TotalScore.ToString();
         WinMenu.SetActive(true);
-        WinMenu.transform.FindChild("Final Score").GetComponent<Text>().text = final_score;
+        WinMenu.transform.FindChild("Final Score").GetComponent<Text>().text = CalculateFinalScore();
     }
 
     /// <summary>
@@ -129,28 +148,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetButtonDown("Cancel"))
-        {
-            PauseScreen();
-        }
-    }
-
     /// <summary>
-    /// Crate is lost, lose time
+    /// Return the calculation of the final score as a string
     /// </summary>
-    public void LoseCrate(GameObject crate)
+    private string CalculateFinalScore()
     {
-        CratePickUp crate_info = crate.GetComponent<CratePickUp>();
-        //Give time penalty and depool the object
-        MainClock.AddToCurrentTime(-crate_info.TimeLost);
-        crate.SetActive(false);
-
-        UC.SetRecentScoreChange(0);
-        UC.SetRecentTimeChange(-crate_info.TimeLost);
-
-        if (crateEvaluated != null)
-            crateEvaluated();
+        string score = UC.TotalScore.ToString();
+        string time_left = MainClock.CurrentTime.ToString();
+        string final_score = (UC.TotalScore + MainClock.CurrentTime).ToString();
+        return "Score: " + score + "\nTime Left: " + time_left + "\nFinal Score: " + score + " + " + time_left + " = \n" + final_score;
     }
 }

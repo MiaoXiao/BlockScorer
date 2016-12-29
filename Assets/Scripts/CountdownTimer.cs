@@ -6,7 +6,25 @@ public class CountdownTimer : MonoBehaviour
 {
     [SerializeField]
     private int StartingTimer = 0;
-    public int CurrentTime { get; private set; }
+
+    private int _CurrentTime = 0;
+    public int CurrentTime
+    {
+        get
+        {
+            return _CurrentTime;
+        }
+        private set
+        {
+            if (value <= -1)
+            {
+                if (timerDone != null)
+                    timerDone();
+                return;
+            }
+            _CurrentTime = value;
+        }
+    }
 
     private float CountToSecond = 0f;
     private GameController GC;
@@ -52,14 +70,10 @@ public class CountdownTimer : MonoBehaviour
         CountToSecond += Time.deltaTime;
         if (CountToSecond >= 1f)
         {
-            CurrentTime -= 1;
             CountToSecond = 0f;
+            CurrentTime -= 1;
 
-            if (timerDone != null && CurrentTime == -1)
-            {
-                timerDone();
-            }
-            else if (secondElapsed != null)
+            if (secondElapsed != null)
             {
                 secondElapsed(CurrentTime);
             }

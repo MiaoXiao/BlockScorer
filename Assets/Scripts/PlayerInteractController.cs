@@ -160,6 +160,8 @@ public class PlayerInteractController : MonoBehaviour
         crate.ReleaseObject();
         crate.RB.AddForce(MC.transform.forward * throw_strength, ForceMode.Impulse);
 
+        GrabbedObject = null;
+
         //Debug.Log("throwing object");
     }
 }
