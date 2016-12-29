@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -11,13 +12,13 @@ public class GameController : MonoBehaviour
     public int StartingTime = 60;
 
     /// <summary>
-    /// Whether pause screen or game over screen is shown or not
+    /// Whether pause screen or game over screen or win screen is shown or not
     /// </summary>
     public bool GamePaused
     {
         get
         {
-            return PauseMenu.activeInHierarchy || GameOverMenu.activeInHierarchy;
+            return PauseMenu.activeInHierarchy || GameOverMenu.activeInHierarchy || WinMenu.activeInHierarchy;
         }
     }
 
@@ -28,19 +29,13 @@ public class GameController : MonoBehaviour
     public CrateEvaluated crateEvaluated;
 
     [SerializeField]
-    private GameObject GeneralHoopParent;
-
-    [SerializeField]
-    private GameObject SuperHoopParent;
-
-    [SerializeField]
-    private GameObject MainPlatform;
-
-    [SerializeField]
     private GameObject PauseMenu;
 
     [SerializeField]
     private GameObject GameOverMenu;
+
+    [SerializeField]
+    private GameObject WinMenu;
 
     private UIController UC;
     private CountdownTimer MainClock;
@@ -56,6 +51,7 @@ public class GameController : MonoBehaviour
         FreezeGameState(false);
         PauseMenu.SetActive(false);
         GameOverMenu.SetActive(false);
+        WinMenu.SetActive(false);
     }
 
     /// <summary>
@@ -69,13 +65,15 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
-    /// End the game and show the game over screen.
+    /// Show the game over screen.
     /// </summary>
-    public void EndGame()
+    public void GameOver()
     {
-        Debug.Log("game over");
+        string final_score = "Final Score\n" + UC.TotalScore.ToString();
+        //Debug.Log("game over");
         GameOverMenu.SetActive(true);
         FreezeGameState(true);
+        GameOverMenu.transform.FindChild("Final Score").GetComponent<Text>().text = final_score;
     }
 
     /// <summary>
@@ -83,7 +81,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
-        Debug.Log("quit");
+        //Debug.Log("quit");
         Application.Quit();
     }
 
@@ -101,6 +99,17 @@ public class GameController : MonoBehaviour
         {
             FreezeGameState(false);
         }
+    }
+
+    /// <summary>
+    /// Show victory screen
+    /// </summary>
+    public void VictoryScreen()
+    {
+        FreezeGameState(true);
+        string final_score = "Final Score\n" + UC.TotalScore.ToString();
+        WinMenu.SetActive(true);
+        WinMenu.transform.FindChild("Final Score").GetComponent<Text>().text = final_score;
     }
 
     /// <summary>

@@ -20,6 +20,8 @@ public class UIController : MonoBehaviour
 
     public Image CursorImage;
 
+    public Text StageName;
+
     [SerializeField]
     private float FadeOutLength = 2f;
 
@@ -116,7 +118,7 @@ public class UIController : MonoBehaviour
         //MainClock.timeSet += SetRecentTimeChange;
 
         MainClock.secondElapsed += UpdateTimeGui;
-        MainClock.timerDone += GC.EndGame;
+        MainClock.timerDone += GC.GameOver;
 
         chargeMeterChange += UpdateThrowCharge;
     }
@@ -188,6 +190,14 @@ public class UIController : MonoBehaviour
         RecentScoreChange.color = new Color(RecentScoreChange.color.r, RecentScoreChange.color.g, RecentScoreChange.color.b, 1f);
 
         ScoreChangeCoroutine = StartCoroutine(FadeOutGui(RecentScoreChange, score_change));
+    }
+
+    /// <summary>
+    /// Show or hide throw meter
+    /// </summary>
+    public void SetStageName(int stage)
+    {
+        StageName.text = "Stage " + (stage + 1).ToString();
     }
 
     private Coroutine ScoreChangeCoroutine;

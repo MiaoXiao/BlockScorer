@@ -72,4 +72,10 @@ public class CountdownTimer : MonoBehaviour
         if (timeSet != null)
             timeSet(CurrentTime);
     }
+
+    public void ResetTime()
+    {
+        CurrentTime = StartingTimer;
+        CountToSecond = 0f;
+    }
 }

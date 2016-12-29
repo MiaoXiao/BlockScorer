@@ -6,15 +6,18 @@ using System;
 [Serializable]
 public class CrateDistribution
 {
-    public List<float> CrateTypeDistribution= new List<float>();
+    public List<int> CrateTypeDistribution= new List<int>();
 
-    public int Total = 0;
-
-    /// <summary>
-    /// Returns the number of crates for a given type.
-    /// </summary>
-    public int RetrieveCrateAmount(int id)
+    public int Total
     {
-        return Mathf.FloorToInt(CrateTypeDistribution[id] * Total);
+        get
+        {
+            int total = 0;
+            foreach(int numb in CrateTypeDistribution)
+            {
+                total += numb;
+            }
+            return total;
+        }
     }
 }

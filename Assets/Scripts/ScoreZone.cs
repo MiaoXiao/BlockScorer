@@ -10,6 +10,13 @@ public class ScoreZone : MonoBehaviour
     [SerializeField]
     private int scoreMultiplier = 1;
 
+    /// <summary>
+    /// Time multiplier if scored in this zone
+    /// </summary>
+    [SerializeField]
+    private int timeMultiplier = 1;
+
+
     private GameController GC;
     private GameObject Player;
     private UIController UC;
@@ -32,7 +39,7 @@ public class ScoreZone : MonoBehaviour
 
         UC.TotalScore += crate_info.PointsGained * scoreMultiplier;
         UC.MainClock.AddToCurrentTime(crate_info.TimeGained * scoreMultiplier);
-        UC.SetRecentScoreChange(crate_info.PointsGained);
+        UC.SetRecentScoreChange(crate_info.PointsGained * scoreMultiplier);
         UC.SetRecentTimeChange(crate_info.TimeGained);
 
         other.gameObject.SetActive(false);

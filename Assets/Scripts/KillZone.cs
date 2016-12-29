@@ -16,7 +16,7 @@ public class KillZone : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
-            GC.EndGame();
+            GC.GameOver();
         else
         {
             GC.LoseCrate(other.gameObject);

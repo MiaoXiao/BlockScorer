@@ -70,4 +70,12 @@ public class BombBehavior : MonoBehaviour
     {
         BombTimer.text = seconds.ToString();
     }
+    
+    /// <summary>
+    /// When this bomb is removed from play, reset its timer
+    /// </summary>
+    private void OnDisable()
+    {
+        BombClock.ResetTime();
+    }
 }

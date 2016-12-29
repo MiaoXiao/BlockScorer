@@ -6,13 +6,25 @@ using UnityEngine.Events;
 public class CrateSpawner : MonoBehaviour
 {
     [SerializeField]
+    private int StartStage = 0;
+
+    [SerializeField]
+    private int LastStage = 29;
+
+    [SerializeField]
     private List<CrateDistribution> StageList = new List<CrateDistribution>();
 
     [SerializeField]
     private List<EnviornmentTrigger> EnviornmentTriggerList = new List<EnviornmentTrigger>();
 
     /// <summary>
-    /// Area to spawn new crates
+    /// Origin point for spawning crates
+    /// </summary>
+    [SerializeField]
+    private GameObject SpawnLocation;
+
+    /// <summary>
+    /// Area around the spawn location to spawn new crates
     /// </summary>
     [SerializeField]
     private Vector2 SpawnArea;
@@ -32,6 +44,7 @@ public class CrateSpawner : MonoBehaviour
         }
         set
         {
+            CheckGameOver(value);
             if (value == _CurrentStage || value < 0 || value >= StageList.Count)
                 return;
 
@@ -67,7 +80,8 @@ public class CrateSpawner : MonoBehaviour
         GC.crateEvaluated += CheckStageDone;
         nextStage += GoToNextStage;
         nextStage += CheckEnvionment;
-        CurrentStage = 0;
+        nextStage += UC.SetStageName;
+        CurrentStage = StartStage - 1;
     }
 
     /// <summary>
@@ -78,6 +92,15 @@ public class CrateSpawner : MonoBehaviour
         //Debug.Log("going to stage " + stage);
         SpawnObjects(StageList[CurrentStage]);
     }
+
+    private void CheckGameOver(int stage)
+    {
+        if (stage == LastStage)
+        {
+            GC.VictoryScreen();
+        }
+    }
+
 
     /// <summary>
     /// Decrease number of current crates or go to the next stage if there are 0 crates;
@@ -115,11 +138,11 @@ public class CrateSpawner : MonoBehaviour
     {
         for (int i = 0; i < AllObjPools.Length; ++i)
         {
-            for (int j = 0; j < cp.RetrieveCrateAmount(i); ++j)
+            for (int j = 0; j < cp.CrateTypeDistribution[i]; ++j)
             {
                 float rand_pos_x = Random.Range(-SpawnArea.x, SpawnArea.x);
                 float rand_pos_y = Random.Range(-SpawnArea.y, SpawnArea.y);
-                Vector3 initial_position = new Vector3(rand_pos_x, transform.position.y, rand_pos_y);
+                Vector3 initial_position = new Vector3(rand_pos_x, SpawnLocation.transform.position.y, rand_pos_y);
 
                 float rand_force_x = Random.Range(-MaximumInitForce, MaximumInitForce);
                 float rand_force_y = Random.Range(-MaximumInitForce, MaximumInitForce);
