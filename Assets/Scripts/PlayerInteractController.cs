@@ -148,19 +148,24 @@ public class PlayerInteractController : MonoBehaviour
     /// </summary>
     private void ActivateLaunch(float throw_strength)
     {
-        if (currentInteractionTarget == null)
+        if (GrabbedObject == null && currentInteractionTarget == null)
             return;
 
         CratePickUp crate;
         if (GrabbedObject != null)
+        {
             crate = GrabbedObject.GetComponent<CratePickUp>();
+            GrabbedObject = null;
+        }
         else
+        {
             crate = currentInteractionTarget.GetGameObject().GetComponent<CratePickUp>();
+        }
 
         crate.ReleaseObject();
         crate.RB.AddForce(MC.transform.forward * throw_strength, ForceMode.Impulse);
 
-        GrabbedObject = null;
+
 
         //Debug.Log("throwing object");
     }

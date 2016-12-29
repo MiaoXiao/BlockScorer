@@ -62,22 +62,23 @@ public class CratePickUp : MonoBehaviour, IInteractable
 
     public string OnActivate()
     {
-        if (activateRenderer != null)
-            activateRenderer.material.color = activeColor;
+        //if (activateRenderer != null)
+          //  activateRenderer.material.color = activeColor;
 
         return crateName;
     }
 
     public void OnDeactivate()
     {
-        if (activateRenderer != null)
-            activateRenderer.material.color = normalColor;
+        //if (activateRenderer != null)
+          //  activateRenderer.material.color = normalColor;
     }
 
     public bool OnInteract(GameObject actor)
     {
         if (isGrabbed)
         {
+
             ReleaseObject();
             return false;
         }
@@ -106,6 +107,9 @@ public class CratePickUp : MonoBehaviour, IInteractable
     /// </summary>
     public void GrabObject()
     {
+        if (activateRenderer != null)
+            activateRenderer.material.color = activeColor;
+
         RB.useGravity = false;
         isGrabbed = true;
         RB.velocity = Vector3.zero;
@@ -116,6 +120,9 @@ public class CratePickUp : MonoBehaviour, IInteractable
     /// </summary>
     public void ReleaseObject()
     {
+        if (activateRenderer != null)
+            activateRenderer.material.color = normalColor;
+
         //Debug.Log("release object");
         RB.useGravity = true;
         isGrabbed = false;
