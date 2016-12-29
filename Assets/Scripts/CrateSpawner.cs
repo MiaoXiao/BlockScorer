@@ -122,7 +122,7 @@ public class CrateSpawner : MonoBehaviour
     {
         foreach(EnviornmentTrigger trigger in EnviornmentTriggerList)
         {
-            if (trigger.StageWhereTriggerOccurs == stage)
+            if (trigger.StageWhereTriggerOccurs - 1 == stage)
             {
                 trigger.SetEnviornmentEvent.Invoke();
                 return;

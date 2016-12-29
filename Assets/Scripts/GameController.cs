@@ -91,6 +91,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void GameOver()
     {
+        MainClock.SetCurrentTime(0);
         GameOverMenu.SetActive(true);
         FreezeGameState(true);
         GameOverMenu.transform.FindChild("Final Score").GetComponent<Text>().text = CalculateFinalScore();

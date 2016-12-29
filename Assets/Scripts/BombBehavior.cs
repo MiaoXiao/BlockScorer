@@ -31,7 +31,6 @@ public class BombBehavior : MonoBehaviour
         BombClock = GetComponent<CountdownTimer>();
 
         BombClock.timerDone += Explode;
-        BombClock.secondElapsed += UpdateBombTimer;
         BombClock.timeSet += UpdateBombTimer;
     }
 

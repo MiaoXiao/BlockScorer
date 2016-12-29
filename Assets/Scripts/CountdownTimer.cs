@@ -23,17 +23,13 @@ public class CountdownTimer : MonoBehaviour
                 return;
             }
             _CurrentTime = value;
+            if (timeSet != null)
+                timeSet(_CurrentTime);
         }
     }
 
     private float CountToSecond = 0f;
     private GameController GC;
-
-    /// <summary>
-    /// One second has gone by
-    /// </summary>
-    public delegate void SecondElapsed(int seconds);
-    public SecondElapsed secondElapsed;
 
     /// <summary>
     /// Time has been altered
@@ -57,8 +53,6 @@ public class CountdownTimer : MonoBehaviour
     private void Start ()
     {
         CurrentTime = StartingTimer;
-        if (secondElapsed != null)
-            secondElapsed(CurrentTime);
 	}
 	
 	// Update is called once per frame
@@ -72,19 +66,18 @@ public class CountdownTimer : MonoBehaviour
         {
             CountToSecond = 0f;
             CurrentTime -= 1;
-
-            if (secondElapsed != null)
-            {
-                secondElapsed(CurrentTime);
-            }
         }
     }
 
     public void AddToCurrentTime(int seconds)
     {
         CurrentTime += seconds;
-        if (timeSet != null)
-            timeSet(CurrentTime);
+    }
+
+
+    public void SetCurrentTime(int seconds)
+    {
+        CurrentTime = seconds;
     }
 
     public void ResetTime()
@@ -92,4 +85,5 @@ public class CountdownTimer : MonoBehaviour
         CurrentTime = StartingTimer;
         CountToSecond = 0f;
     }
+
 }

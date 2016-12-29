@@ -81,13 +81,14 @@ public class HoopMovement : MonoBehaviour
 
     IEnumerator RaiseHoops(float height, int child)
     {
+        Transform child_transform = transform.GetChild(child).transform;
         float time_elpased = 0f;
-        Vector3 original_pos = transform.GetChild(child).transform.position;
-        Vector3 new_pos = new Vector3(transform.position.x, 0, transform.position.z);
+        Vector3 original_pos = child_transform.position;
+        Vector3 new_pos = new Vector3(child_transform.position.x, child_transform.position.y + height, child_transform.position.z);
         while (time_elpased < TimeToRaiseHoops)
         {
             time_elpased += Time.deltaTime;
-            transform.GetChild(child).transform.position = Vector3.Lerp(original_pos, original_pos + Vector3.up * height, time_elpased / TimeToRaiseHoops);
+            transform.GetChild(child).transform.position = Vector3.Lerp(original_pos, new_pos, time_elpased / TimeToRaiseHoops);
             yield return null;
         }
     }

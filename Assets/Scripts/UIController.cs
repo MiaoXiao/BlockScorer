@@ -117,7 +117,6 @@ public class UIController : MonoBehaviour
         MainClock.timeSet += UpdateTimeGui;
         //MainClock.timeSet += SetRecentTimeChange;
 
-        MainClock.secondElapsed += UpdateTimeGui;
         MainClock.timerDone += GC.GameOver;
 
         chargeMeterChange += UpdateThrowCharge;
