@@ -36,7 +36,8 @@ public class PlayerInteractController : MonoBehaviour
 
 	private void Start()
 	{
-		if(input != null)
+        GetComponent<AudioSource>().pitch = 1.5f;
+        if (input != null)
 		{
 			input.onActivate += OnActivate;
             input.onLaunch += ActivateLaunch;
@@ -148,6 +149,9 @@ public class PlayerInteractController : MonoBehaviour
     /// </summary>
     private void ActivateLaunch(float throw_strength)
     {
+
+        //GetComponent<AudioSource>().Play();
+
         if (GrabbedObject == null && currentInteractionTarget == null)
             return;
 
@@ -164,8 +168,6 @@ public class PlayerInteractController : MonoBehaviour
 
         crate.ReleaseObject();
         crate.RB.AddForce(MC.transform.forward * throw_strength, ForceMode.Impulse);
-
-
 
         //Debug.Log("throwing object");
     }

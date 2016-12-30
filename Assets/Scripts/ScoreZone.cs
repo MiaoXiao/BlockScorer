@@ -42,6 +42,8 @@ public class ScoreZone : MonoBehaviour
         UC.SetRecentScoreChange(crate_info.PointsGained * scoreMultiplier);
         UC.SetRecentTimeChange(crate_info.TimeGained * timeMultiplier);
 
+        GetComponent<AudioSource>().Play();
+
         other.gameObject.SetActive(false);
 
         GC.crateEvaluated();

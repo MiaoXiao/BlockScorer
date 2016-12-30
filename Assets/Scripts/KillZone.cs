@@ -20,6 +20,7 @@ public class KillZone : MonoBehaviour
         else
         {
             GC.LoseCrate(other.gameObject);
+            GetComponent<AudioSource>().Play();
         }
 
     }

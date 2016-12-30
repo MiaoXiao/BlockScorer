@@ -95,6 +95,8 @@ public class GameController : MonoBehaviour
         GameOverMenu.SetActive(true);
         FreezeGameState(true);
         GameOverMenu.transform.FindChild("Final Score").GetComponent<Text>().text = CalculateFinalScore();
+
+        GetComponents<AudioSource>()[1].Play();
     }
 
     /// <summary>
@@ -130,6 +132,8 @@ public class GameController : MonoBehaviour
         FreezeGameState(true);
         WinMenu.SetActive(true);
         WinMenu.transform.FindChild("Final Score").GetComponent<Text>().text = CalculateFinalScore();
+
+        GetComponents<AudioSource>()[0].Play();
     }
 
     /// <summary>

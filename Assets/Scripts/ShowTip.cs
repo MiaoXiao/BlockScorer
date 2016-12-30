@@ -26,7 +26,6 @@ public class ShowTip : MonoBehaviour
 
     IEnumerator Deactivate(string message)
     {
-        Debug.Log("showing");
         TipText.text = message;
         TipText.transform.parent.gameObject.SetActive(true);
         yield return new WaitForSeconds(DeactivateInSeconds);

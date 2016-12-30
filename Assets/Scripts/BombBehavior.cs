@@ -60,6 +60,7 @@ public class BombBehavior : MonoBehaviour
         }
 
         GC.LoseCrate(gameObject);
+        GetComponent<AudioSource>().Play();
     }
 
     /// <summary>
