@@ -40,7 +40,7 @@ public class ScoreZone : MonoBehaviour
         UC.TotalScore += crate_info.PointsGained * scoreMultiplier;
         UC.MainClock.AddToCurrentTime(crate_info.TimeGained * scoreMultiplier);
         UC.SetRecentScoreChange(crate_info.PointsGained * scoreMultiplier);
-        UC.SetRecentTimeChange(crate_info.TimeGained);
+        UC.SetRecentTimeChange(crate_info.TimeGained * timeMultiplier);
 
         other.gameObject.SetActive(false);
 
