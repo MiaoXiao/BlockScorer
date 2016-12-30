@@ -27,6 +27,9 @@ public class UIController : MonoBehaviour
 
     public CountdownTimer MainClock;
 
+    private Coroutine ScoreChangeCoroutine;
+    private Coroutine TimeChangeCoroutine;
+
     private GameController GC;
 
     /*
@@ -199,8 +202,6 @@ public class UIController : MonoBehaviour
         StageName.text = "Stage " + (stage + 1).ToString();
     }
 
-    private Coroutine ScoreChangeCoroutine;
-    private Coroutine TimeChangeCoroutine;
     /// <summary>
     /// Show recent score or time changes in the gui
     /// </summary>

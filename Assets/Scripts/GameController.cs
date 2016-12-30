@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void RestartGame()
     {
-        Debug.Log("restart game");
+        //Debug.Log("restart game");
         SceneManager.LoadScene("MainScene");
         
     }
