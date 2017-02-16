@@ -104,7 +104,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
-        //Debug.Log("quit");
+        PlayerPrefs.DeleteAll();
         Application.Quit();
     }
 

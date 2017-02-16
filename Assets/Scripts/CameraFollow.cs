@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -9,12 +10,15 @@ public class CameraFollow : MonoBehaviour
 	public Transform target;
 
     public bool InvertY = true;
-    public bool InvertX = false;
+    public bool InvertX = true;
 
 	public float distance = 5f;
 	public Vector2 verticalLimit = new Vector2(-15f, 15f);
 	public float speed = 10f;
-	
+
+    public Toggle InvertXToggle;
+    public Toggle InvertYToggle;
+
 	private Vector2 m_currentRotation;
 
     private GameController GC;
@@ -24,12 +28,28 @@ public class CameraFollow : MonoBehaviour
     {
         GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         Player = GameObject.FindGameObjectWithTag("Player");
+        
+        //Restore mouse invert settings
+        if (PlayerPrefs.HasKey("invert_x"))
+        {
+            //Debug.Log("restore x");
+            bool saved_x_status = PlayerPrefs.GetInt("invert_x") == 1;
+            InvertXToggle.isOn = saved_x_status;
+            InvertX = saved_x_status;
+        }
+        if (PlayerPrefs.HasKey("invert_y"))
+        {
+            //Debug.Log("restore y"); 
+            bool saved_y_status = PlayerPrefs.GetInt("invert_y") == 1;
+            InvertYToggle.isOn = !saved_y_status;
+            InvertY = saved_y_status;
+        }
     }
 
-	private void Start()
+    private void Start()
 	{
 		m_currentRotation = Vector2.zero;
-	}
+    }
 	
 	private void Update()
 	{
@@ -99,4 +119,22 @@ public class CameraFollow : MonoBehaviour
 		 
          return Mathf.Clamp(angle, min, max);
      }
+
+    public void InvertMouseX()
+    {
+        InvertX = !InvertX;
+        if (InvertX)
+            PlayerPrefs.SetInt("invert_x", 1);
+        else
+            PlayerPrefs.SetInt("invert_x", 0);
+    }
+
+    public void InvertMouseY()
+    {
+        InvertY = !InvertY;
+        if (InvertY)
+            PlayerPrefs.SetInt("invert_y", 1);
+        else
+            PlayerPrefs.SetInt("invert_y", 0);
+    }
 }

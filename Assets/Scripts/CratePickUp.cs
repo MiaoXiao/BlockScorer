@@ -128,4 +128,9 @@ public class CratePickUp : MonoBehaviour, IInteractable
         isGrabbed = false;
         RB.velocity = Vector3.zero;
     }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        //GetComponents<AudioSource>()[Random.Range(0, 2)].Play();
+    }
 }

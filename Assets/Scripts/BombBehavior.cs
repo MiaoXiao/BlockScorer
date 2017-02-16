@@ -58,9 +58,9 @@ public class BombBehavior : MonoBehaviour
                 rb.AddExplosionForce(ExplosionForce, transform.position, ExplosionRadius, UpwardsForce);
 
         }
+        GC.GetComponents<AudioSource>()[2].Play();
 
         GC.LoseCrate(gameObject);
-        GetComponent<AudioSource>().Play();
     }
 
     /// <summary>
